@@ -1,5 +1,3 @@
-# surest-member-management
-
 # Surest Member Management
 
 Spring Boot app for managing members (JWT-secured), with PostgreSQL, Flyway migrations, caching, pagination/sorting, unit & integration tests, and JaCoCo coverage.
