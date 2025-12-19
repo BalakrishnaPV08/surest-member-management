@@ -1,0 +1,194 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Member</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.tietoevry.surest.member.management.entity</a>
+</div>
+
+<h1>Coverage Summary for Class: Member (com.tietoevry.surest.member.management.entity)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Member</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Member$HibernateInstantiator</td>
+  </tr>
+  <tr>
+    <td class="name">Member$HibernateProxy</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.tietoevry.surest.member.management.entity;
+&nbsp;
+&nbsp;import jakarta.persistence.*;
+&nbsp;import java.time.Instant;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.util.UUID;
+&nbsp;
+&nbsp;@Entity
+&nbsp;@Table(name = &quot;member&quot;)
+<b class="nc">&nbsp;public class Member {</b>
+&nbsp;    @Id
+&nbsp;    @Column(columnDefinition = &quot;uuid&quot;)
+&nbsp;    private UUID id;
+&nbsp;
+&nbsp;    @Column(name = &quot;first_name&quot;, length = 100, nullable = false)
+&nbsp;    private String firstName;
+&nbsp;
+&nbsp;    @Column(name = &quot;last_name&quot;, length = 100, nullable = false)
+&nbsp;    private String lastName;
+&nbsp;
+&nbsp;    @Column(name = &quot;date_of_birth&quot;, nullable = false)
+&nbsp;    private LocalDate dateOfBirth;
+&nbsp;
+&nbsp;    @Column(name = &quot;email&quot;, length = 255, nullable = false, unique = true)
+&nbsp;    private String email;
+&nbsp;
+&nbsp;    @Column(name = &quot;created_at&quot;, nullable = false)
+&nbsp;    private Instant createdAt;
+&nbsp;
+&nbsp;    @Column(name = &quot;updated_at&quot;, nullable = false)
+&nbsp;    private Instant updatedAt;
+&nbsp;
+&nbsp;    @PrePersist
+&nbsp;    public void prePersist() {
+<b class="nc">&nbsp;        if (id == null) id = UUID.randomUUID();</b>
+<b class="nc">&nbsp;        createdAt = Instant.now();</b>
+<b class="nc">&nbsp;        updatedAt = createdAt;</b>
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    @PreUpdate
+<b class="nc">&nbsp;    public void preUpdate() { updatedAt = Instant.now(); }</b>
+&nbsp;
+<b class="nc">&nbsp;    public UUID getId() { return id; }</b>
+<b class="nc">&nbsp;    public void setId(UUID id) { this.id = id; }</b>
+<b class="nc">&nbsp;    public String getFirstName() { return firstName; }</b>
+<b class="nc">&nbsp;    public void setFirstName(String firstName) { this.firstName = firstName; }</b>
+<b class="nc">&nbsp;    public String getLastName() { return lastName; }</b>
+<b class="nc">&nbsp;    public void setLastName(String lastName) { this.lastName = lastName; }</b>
+<b class="nc">&nbsp;    public LocalDate getDateOfBirth() { return dateOfBirth; }</b>
+<b class="nc">&nbsp;    public void setDateOfBirth(LocalDate dateOfBirth) { this.dateOfBirth = dateOfBirth; }</b>
+<b class="nc">&nbsp;    public String getEmail() { return email; }</b>
+<b class="nc">&nbsp;    public void setEmail(String email) { this.email = email; }</b>
+<b class="nc">&nbsp;    public Instant getCreatedAt() { return createdAt; }</b>
+<b class="nc">&nbsp;    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }</b>
+<b class="nc">&nbsp;    public Instant getUpdatedAt() { return updatedAt; }</b>
+<b class="nc">&nbsp;    public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }</b>
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-12-19 10:09</div>
+</div>
+</body>
+</html>
