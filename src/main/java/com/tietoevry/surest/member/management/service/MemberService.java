@@ -32,12 +32,12 @@ public class MemberService {
 
     @Cacheable(value = "members", key = "#id")
     public MemberDto getById(UUID id) {
-        return memberRepository.findById(id).map(mapper::toDto).orElseThrow(() -> new ApiException.NotFound("Member not found"));
+        return memberRepository.findById(id).map(mapper::toDto).orElseThrow(() -> new ApiException.NotFound("member", "not-found"));
     }
 
     @Transactional
     public MemberDto create(MemberDto dto) {
-        memberRepository.findByEmail(dto.email).ifPresent(m -> { throw new ApiException.Conflict("Email already exists"); });
+        memberRepository.findByEmail(dto.email).ifPresent(m -> { throw new ApiException.Conflict("member", "email-exists"); });
         Member m = mapper.toEntity(dto);
         Member saved = memberRepository.save(m);
         return mapper.toDto(saved);
@@ -46,7 +46,7 @@ public class MemberService {
     @Transactional
     @CacheEvict(value = "members", key = "#id")
     public MemberDto update(UUID id, MemberDto dto) {
-        Member existing = memberRepository.findById(id).orElseThrow(() -> new ApiException.NotFound("Member not found"));
+        Member existing = memberRepository.findById(id).orElseThrow(() -> new ApiException.NotFound("member", "not-found"));
         existing.setFirstName(dto.firstName); existing.setLastName(dto.lastName); existing.setDateOfBirth(dto.dateOfBirth); existing.setEmail(dto.email);
         Member saved = memberRepository.save(existing);
         return mapper.toDto(saved);
@@ -55,7 +55,7 @@ public class MemberService {
     @Transactional
     @CacheEvict(value = "members", key = "#id")
     public void delete(UUID id) {
-        Member existing = memberRepository.findById(id).orElseThrow(() -> new ApiException.NotFound("Member not found"));
+        Member existing = memberRepository.findById(id).orElseThrow(() -> new ApiException.NotFound("member", "not-found"));
         memberRepository.delete(existing);
     }
 }

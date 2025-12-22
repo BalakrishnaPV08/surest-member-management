@@ -3,6 +3,7 @@ package com.tietoevry.surest.member.management.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tietoevry.surest.member.management.config.TestSecurityConfig;
 import com.tietoevry.surest.member.management.dto.LoginRequest;
+import com.tietoevry.surest.member.management.exception.ErrorMessagesConfig;
 import com.tietoevry.surest.member.management.service.AuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ class AuthControllerTest {
 
     @MockitoBean
     private AuthService authService;
+
+    @MockitoBean
+    private ErrorMessagesConfig errorMessagesConfig;
 
     @Test
     void login_withValidCredentials_returns200AndToken() throws Exception {
