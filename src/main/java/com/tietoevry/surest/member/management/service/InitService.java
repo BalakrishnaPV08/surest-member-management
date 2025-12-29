@@ -9,6 +9,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class InitService {
     private final RoleRepository roleRepository;
@@ -29,10 +31,10 @@ public class InitService {
         });
 
         if (userRepository.findByUsername("admin").isEmpty()) {
-            AppUser u = new AppUser(); u.setUsername("admin"); u.setPasswordHash(passwordEncoder.encode("adminpass")); u.setRole(admin); userRepository.save(u);
+            AppUser u = new AppUser(); u.setUsername("admin"); u.setPasswordHash(passwordEncoder.encode("adminpass")); u.setRoles(Set.of(admin)); userRepository.save(u);
         }
         if (userRepository.findByUsername("user").isEmpty()) {
-            AppUser u = new AppUser(); u.setUsername("user"); u.setPasswordHash(passwordEncoder.encode("userpass")); u.setRole(userRole); userRepository.save(u);
+            AppUser u = new AppUser(); u.setUsername("user"); u.setPasswordHash(passwordEncoder.encode("userpass")); u.setRoles(Set.of(userRole)); userRepository.save(u);
         }
     }
 }

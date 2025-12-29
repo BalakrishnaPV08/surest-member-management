@@ -78,7 +78,7 @@ class MemberControllerTest {
         when(memberService.search(null, null, pr))
                 .thenReturn(new PageImpl<>(List.of(dto)));
 
-        mockMvc.perform(get("/members")
+        mockMvc.perform(get("/api/v1/members")
                         .param("page", "0")
                         .param("size", "10")
                         .param("sort", "lastName,asc"))
@@ -98,7 +98,7 @@ class MemberControllerTest {
 
         when(memberService.getById(id)).thenReturn(dto);
 
-        mockMvc.perform(get("/members/{id}", id))
+        mockMvc.perform(get("/api/v1/members/{id}", id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("Balu"));
     }
@@ -119,7 +119,7 @@ class MemberControllerTest {
         when(memberService.create(any(MemberDto.class)))
                 .thenReturn(created);
 
-        mockMvc.perform(post("/members")
+        mockMvc.perform(post("/api/v1/members")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isCreated())
@@ -143,7 +143,7 @@ class MemberControllerTest {
         when(memberService.update(eq(id), any(MemberDto.class)))
                 .thenReturn(updated);
 
-        mockMvc.perform(put("/members/{id}", id)
+        mockMvc.perform(put("/api/v1/members/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isOk())
@@ -158,7 +158,7 @@ class MemberControllerTest {
 
         doNothing().when(memberService).delete(id);
 
-        mockMvc.perform(delete("/members/{id}", id))
+        mockMvc.perform(delete("/api/v1/members/{id}", id))
                 .andExpect(status().isNoContent());
     }
 }
