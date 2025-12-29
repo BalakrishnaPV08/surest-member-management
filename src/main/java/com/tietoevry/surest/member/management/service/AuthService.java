@@ -20,8 +20,8 @@ public class AuthService {
     }
 
     public String login(String username, String password) {
-        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new ApiException.NotFound("User not found"));
-        if (!passwordEncoder.matches(password, user.getPasswordHash())) throw new ApiException.Unauthorized("Invalid credentials");
+        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new ApiException.NotFound("user", "not-found"));
+        if (!passwordEncoder.matches(password, user.getPasswordHash())) throw new ApiException.Unauthorized("user","invalid-credentials");
         return jwtUtil.generateToken(user.getUsername(), user.getRole().getName());
     }
 }

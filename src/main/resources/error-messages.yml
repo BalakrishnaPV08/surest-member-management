@@ -1,0 +1,29 @@
+error:
+  messages:
+    user:
+      not-found:
+        statusCode: 404
+        userMessage: "User account not found. Please check your username and try again."
+        systemMessage: "User not found in database"
+
+      invalid-credentials:
+        statusCode: 401
+        userMessage: "Invalid username or password. Please try again."
+        systemMessage: "Password mismatch for user"
+
+    member:
+      not-found:
+        statusCode: 404
+        userMessage: "Member record not found."
+        systemMessage: "Member ID does not exist"
+
+      email-exists:
+        statusCode: 409
+        userMessage: "This email address is already registered in the system."
+        systemMessage: "Email already exists in database"
+
+    server:
+      internal-error:
+        statusCode: 500
+        userMessage: "An internal server error occurred. Please try again later."
+        systemMessage: "Unexpected exception in application"

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tietoevry.surest.member.management.config.TestSecurityConfig;
 import com.tietoevry.surest.member.management.dto.CreateMemberRequest;
 import com.tietoevry.surest.member.management.dto.MemberDto;
+import com.tietoevry.surest.member.management.exception.ErrorMessagesConfig;
 import com.tietoevry.surest.member.management.service.MemberService;
 
 import org.junit.jupiter.api.Test;
@@ -52,6 +53,9 @@ class MemberControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockitoBean
+    private ErrorMessagesConfig errorMessagesConfig;
 
     @Autowired
     private ObjectMapper objectMapper;
