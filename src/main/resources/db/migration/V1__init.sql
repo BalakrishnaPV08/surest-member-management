@@ -26,20 +26,6 @@ CREATE TABLE IF NOT EXISTS member (
     updated_at TIMESTAMP NOT NULL DEFAULT now()
     );
 
--- Seed roles
-INSERT INTO role (id, name) VALUES (uuid_generate_v4(), 'ROLE_ADMIN') ON CONFLICT (name) DO NOTHING;
-INSERT INTO role (id, name) VALUES (uuid_generate_v4(), 'ROLE_USER') ON CONFLICT (name) DO NOTHING;
 
--- Using {noop} for POC; switch to {bcrypt}<hash> for production.
-INSERT INTO app_user (id, username, password_hash, role_id)
-SELECT uuid_generate_v4(), 'balakrishna', 'balakrishna123', r.id FROM role r WHERE r.name = 'ROLE_ADMIN'
-    ON CONFLICT (username) DO NOTHING;
-
-INSERT INTO app_user (id, username, password_hash, role_id)
-SELECT uuid_generate_v4(), 'balu', 'balu123', r.id FROM role r WHERE r.name = 'ROLE_USER'
-    ON CONFLICT (username) DO NOTHING;
-
-INSERT INTO app_user (id, username, password_hash, role_id)
-SELECT uuid_generate_v4(), 'krishna', 'krishna', r.id FROM role r WHERE r.name = 'ROLE_USER'
 
 

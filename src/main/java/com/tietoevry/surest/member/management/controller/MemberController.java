@@ -22,7 +22,7 @@ public class MemberController {
     public MemberController(MemberService service) { this.service = service; }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public Page<MemberDto> list(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "10") int size,
                                 @RequestParam(defaultValue = "lastName,asc") String sort,
@@ -39,13 +39,13 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public MemberDto get(@PathVariable UUID id) {
         log.info("Fetching member by id={}", id);
         return service.getById(id); }
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MemberDto> create(@Valid @RequestBody CreateMemberRequest req) {
         log.info("Creating member: firstName={}, lastName={}",
                 req.firstName, req.lastName);
@@ -55,7 +55,7 @@ public class MemberController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public MemberDto update(@PathVariable UUID id, @Valid @RequestBody CreateMemberRequest req) {
         log.info("Updating member id={}, firstName={}, lastName={}",
                 id, req.firstName, req.lastName);
@@ -64,7 +64,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         log.warn("Deleting member with id={}", id);
         service.delete(id); return ResponseEntity.noContent().build(); }
