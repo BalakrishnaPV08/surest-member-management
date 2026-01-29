@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -29,12 +30,22 @@ public class MemberController {
                                 @RequestParam(required = false) String firstName,
                                 @RequestParam(required = false) String lastName) {
 
-        log.info("Listing members: page={}, size={}, sort={}, firstName={}, lastName={}",
-                page, size, sort, firstName, lastName);
+        int safePage = Math.max(page, 0);
+        int safeSize = Math.min(Math.max(size, 1), 100);
+
+        List<String> allowedSortFields = List.of("firstName", "lastName", "email", "id");
 
         String[] sortParts = sort.split(",");
-        Sort.Direction dir = Sort.Direction.fromString(sortParts.length>1?sortParts[1] : "asc");
-        PageRequest pr = PageRequest.of(page, size, Sort.by(dir, sortParts[0]));
+        String sortField = sortParts[0];
+        String sortDir = sortParts.length > 1 ? sortParts[1] : "asc";
+
+        if (!allowedSortFields.contains(sortField)) {
+            sortField = "lastName";
+        }
+
+        Sort.Direction direction = Sort.Direction.fromString(sortDir);
+        PageRequest pr = PageRequest.of(safePage, safeSize, Sort.by(direction, sortField));
+
         return service.search(firstName, lastName, pr);
     }
 

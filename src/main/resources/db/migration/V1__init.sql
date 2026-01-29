@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS app_user (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     username VARCHAR(50) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    role_id UUID REFERENCES role(id)
+    role_id UUID NOT NULL REFERENCES role(id)
     );
 
 -- Create member table

@@ -4,13 +4,16 @@ import com.tietoevry.surest.member.management.entity.AppUser;
 import com.tietoevry.surest.member.management.entity.Role;
 import com.tietoevry.surest.member.management.repository.RoleRepository;
 import com.tietoevry.surest.member.management.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
+@Slf4j
 @Service
 public class InitService {
 
@@ -38,22 +41,28 @@ public class InitService {
             r.setName("ROLE_USER");
             return roleRepository.save(r);
         });
-
-        if (userRepository.findByUsername("admin").isEmpty()) {
-            AppUser u = new AppUser();
-            u.setUsername("admin");
-            u.setPasswordHash(passwordEncoder.encode("adminpass"));
-            u.setRoles(Set.of(admin, userRole)); // ✅ multiple roles
-            userRepository.save(u);
+        try{
+            if (userRepository.findByUsername("admin").isEmpty()) {
+                AppUser u = new AppUser();
+                u.setUsername("admin");
+                u.setPasswordHash(passwordEncoder.encode("adminpass"));
+                u.setRoles(Set.of(admin, userRole)); // ✅ multiple roles
+                userRepository.save(u);
+            }
+        }catch (DataIntegrityViolationException e) {
+            log.warn("Admin user already exists, skipping creation");
         }
 
-        if (userRepository.findByUsername("user").isEmpty()) {
-            AppUser u = new AppUser();
-            u.setUsername("user");
-            u.setPasswordHash(passwordEncoder.encode("userpass"));
-            u.setRoles(Set.of(userRole)); // ✅ single role
-            userRepository.save(u);
-        }
-
+       try{
+           if (userRepository.findByUsername("user").isEmpty()) {
+               AppUser u = new AppUser();
+               u.setUsername("user");
+               u.setPasswordHash(passwordEncoder.encode("userpass"));
+               u.setRoles(Set.of(userRole)); // ✅ single role
+               userRepository.save(u);
+           }
+       }catch (DataIntegrityViolationException e) {
+           log.warn("User already exists, skipping creation");
+       }
     }
 }
