@@ -1,12 +1,16 @@
 package com.tietoevry.surest.member.management.exception;
 
+<<<<<<< HEAD
 import jakarta.annotation.PostConstruct;
+=======
+>>>>>>> 602906156e831d4c39cb12030336b68fdf676fc6
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+<<<<<<< HEAD
 //@Component
 @ConfigurationProperties(prefix = "error.messages")
 public class ErrorMessagesConfig {
@@ -16,6 +20,11 @@ public class ErrorMessagesConfig {
         System.out.println("Loaded error messages = " + messages);
     }
 
+=======
+@Component
+@ConfigurationProperties(prefix = "error")
+public class ErrorMessagesConfig {
+>>>>>>> 602906156e831d4c39cb12030336b68fdf676fc6
     private Map<String, Map<String, ErrorDetail>> messages = new HashMap<>();
 
     public Map<String, Map<String, ErrorDetail>> getMessages() {

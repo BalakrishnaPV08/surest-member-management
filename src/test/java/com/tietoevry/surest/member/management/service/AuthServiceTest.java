@@ -9,7 +9,9 @@ import com.tietoevry.surest.member.management.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Collections;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -30,11 +32,11 @@ public class AuthServiceTest {
         AppUser user = new AppUser();
         user.setUsername("balu");
         user.setPasswordHash("balu123");
-        user.setRole(role);
+        user.setRoles(Set.of(role));
 
         when(repo.findByUsername("balu")).thenReturn(Optional.of(user));
         when(encoder.matches("balu123", "balu123")).thenReturn(true);
-        when(jwt.generateToken("balu", "ROLE_ADMIN")).thenReturn("TOKEN123");
+        when(jwt.generateToken("balu", Collections.singletonList("ROLE_ADMIN"))).thenReturn("TOKEN123");
 
         String token = service.login("balu", "balu123");
 

@@ -1,11 +1,14 @@
 package com.tietoevry.surest.member.management.service;
 
 import com.tietoevry.surest.member.management.entity.AppUser;
+import com.tietoevry.surest.member.management.entity.Role;
 import com.tietoevry.surest.member.management.repository.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -18,12 +21,27 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+        log.info("Loading user details for username: {}", username);
+
         AppUser user = repo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        log.info("User found: username={}, roles={}",
+                user.getUsername(),
+                user.getRoles()
+                        .stream()
+                        .map(Role::getName)
+                        .toList()
+        );
+
         return User.withUsername(user.getUsername())
-                .password(user.getPasswordHash())       // plain text
-                .authorities(user.getRole().getName())
+                .password(user.getPasswordHash())
+                .authorities(
+                        user.getRoles()
+                                .stream()
+                                .map(Role::getName)
+                                .toArray(String[]::new)
+                )
                 .build();
     }
 }
