@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -21,18 +23,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        log.info("Loading user details for username: {}", username);
-
         AppUser user = repo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        log.info("User found: username={}, roles={}",
-                user.getUsername(),
-                user.getRoles()
-                        .stream()
-                        .map(Role::getName)
-                        .toList()
-        );
 
         return User.withUsername(user.getUsername())
                 .password(user.getPasswordHash())
@@ -45,4 +37,3 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .build();
     }
 }
-

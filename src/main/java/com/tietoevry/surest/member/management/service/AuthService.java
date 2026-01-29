@@ -2,6 +2,7 @@ package com.tietoevry.surest.member.management.service;
 
 import com.tietoevry.surest.member.management.config.JwtUtil;
 import com.tietoevry.surest.member.management.entity.AppUser;
+import com.tietoevry.surest.member.management.entity.Role;
 import com.tietoevry.surest.member.management.exception.ApiException;
 import com.tietoevry.surest.member.management.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -24,18 +25,19 @@ public class AuthService {
     }
 
     public String login(String username, String password) {
-        AppUser user = userRepository.findByUsername(username).orElseThrow(() -> new ApiException.NotFound("user", "not-found"));
-        if (!passwordEncoder.matches(password, user.getPasswordHash())) throw new ApiException.Unauthorized("user","invalid-credentials");
-<<<<<<< HEAD
-        return jwtUtil.generateToken(user.getUsername(), user.getRole().getName());
-=======
+        AppUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ApiException.NotFound("user", "not-found"));
+
+        if (!passwordEncoder.matches(password, user.getPasswordHash())) {
+            throw new ApiException.Unauthorized("user", "invalid-credentials");
+        }
+
         List<String> roles = user.getRoles()
                 .stream()
-                .map(role -> role.getName())
+                .map(Role::getName)
                 .toList();
-        log.info("User {} logged in successfully", user.getUsername());
+
         return jwtUtil.generateToken(user.getUsername(), roles);
->>>>>>> 602906156e831d4c39cb12030336b68fdf676fc6
     }
 }
 

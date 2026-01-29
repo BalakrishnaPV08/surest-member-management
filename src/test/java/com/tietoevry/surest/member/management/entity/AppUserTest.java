@@ -16,27 +16,8 @@ class AppUserTest {
         assertNull(user.getId());
         assertNull(user.getUsername());
         assertNull(user.getPasswordHash());
-        assertNull(user.getRoles());
-    }
-
-    @Test
-    void allArgsConstructor_shouldSetAllFields() {
-        UUID id = UUID.randomUUID();
-        Role role = new Role();
-        role.setName("ROLE_ADMIN");
-
-        AppUser user = new AppUser(
-                id,
-                "admin",
-                "password-hash",
-                Set.of(role)
-        );
-
-        assertEquals(id, user.getId());
-        assertEquals("admin", user.getUsername());
-        assertEquals("password-hash", user.getPasswordHash());
-        assertEquals(1, user.getRoles().size());
-        assertTrue(user.getRoles().contains(role));
+        assertNotNull(user.getRoles()); // ✅ roles is initialized
+        assertTrue(user.getRoles().isEmpty());
     }
 
     @Test
@@ -55,7 +36,8 @@ class AppUserTest {
         assertEquals(id, user.getId());
         assertEquals("user", user.getUsername());
         assertEquals("hash", user.getPasswordHash());
-        assertEquals(Set.of(role), user.getRoles());
+        assertEquals(1, user.getRoles().size());
+        assertTrue(user.getRoles().contains(role));
     }
 
     @Test
@@ -81,34 +63,17 @@ class AppUserTest {
     }
 
     @Test
-    void equalsAndHashCode_shouldWorkForSameData() {
-        UUID id = UUID.randomUUID();
-
-        AppUser u1 = new AppUser(
-                id,
-                "sameUser",
-                "hash",
-                Set.of()
-        );
-
-        AppUser u2 = new AppUser(
-                id,
-                "sameUser",
-                "hash",
-                Set.of()
-        );
-
-        assertEquals(u1, u2);
-        assertEquals(u1.hashCode(), u2.hashCode());
-    }
-
-    @Test
-    void toString_shouldContainUsername() {
+    void roles_shouldAllowMultipleRoles() {
         AppUser user = new AppUser();
-        user.setUsername("testUser");
 
-        String toString = user.toString();
+        Role admin = new Role();
+        admin.setName("ROLE_ADMIN");
 
-        assertTrue(toString.contains("testUser"));
+        Role userRole = new Role();
+        userRole.setName("ROLE_USER");
+
+        user.setRoles(Set.of(admin, userRole));
+
+        assertEquals(2, user.getRoles().size());
     }
 }

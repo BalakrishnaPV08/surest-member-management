@@ -13,29 +13,47 @@ import java.util.Set;
 
 @Service
 public class InitService {
+
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     public InitService(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.roleRepository = roleRepository; this.userRepository = userRepository; this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
+
         Role admin = roleRepository.findByName("ROLE_ADMIN").orElseGet(() -> {
-            Role r = new Role(); r.setName("ROLE_ADMIN"); return roleRepository.save(r);
+            Role r = new Role();
+            r.setName("ROLE_ADMIN");
+            return roleRepository.save(r);
         });
+
         Role userRole = roleRepository.findByName("ROLE_USER").orElseGet(() -> {
-            Role r = new Role(); r.setName("ROLE_USER"); return roleRepository.save(r);
+            Role r = new Role();
+            r.setName("ROLE_USER");
+            return roleRepository.save(r);
         });
 
         if (userRepository.findByUsername("admin").isEmpty()) {
-            AppUser u = new AppUser(); u.setUsername("admin"); u.setPasswordHash(passwordEncoder.encode("adminpass")); u.setRoles(Set.of(admin)); userRepository.save(u);
+            AppUser u = new AppUser();
+            u.setUsername("admin");
+            u.setPasswordHash(passwordEncoder.encode("adminpass"));
+            u.setRoles(Set.of(admin, userRole)); // ✅ multiple roles
+            userRepository.save(u);
         }
+
         if (userRepository.findByUsername("user").isEmpty()) {
-            AppUser u = new AppUser(); u.setUsername("user"); u.setPasswordHash(passwordEncoder.encode("userpass")); u.setRoles(Set.of(userRole)); userRepository.save(u);
+            AppUser u = new AppUser();
+            u.setUsername("user");
+            u.setPasswordHash(passwordEncoder.encode("userpass"));
+            u.setRoles(Set.of(userRole)); // ✅ single role
+            userRepository.save(u);
         }
+
     }
 }
-
